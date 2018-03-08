@@ -1,0 +1,42 @@
+class DuoTaiDemo01 
+{
+	public static void main(String[] args) 
+	{
+		//a.父类的引用指向子类的对象
+		Son s = new Son();//当前类的引用指向当前类的对象
+		
+		//Father f = new Son();
+
+		Father f1 = s;
+
+
+		//b.接口的引用指向实现类的对象
+		Dog d = new Dog();
+
+		//注意：虽然接口不能实例化对象，但是接口仍然是一种数据类型
+		//体现:接口类型多出现在参数或者返回值类型中
+		Animal a = d;
+
+
+	}
+}
+
+//父类
+class Father
+{
+}
+
+//子类
+class Son extends Father
+{
+}
+
+//接口
+interface Animal
+{
+}
+
+//实现类
+class Dog implements Animal
+{
+}

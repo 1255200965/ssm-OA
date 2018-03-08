@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 全局常量开关 -->
+	<!-- <settings>
+	二级缓存
+		<setting name="cacheEnabled" value="false"/>
+		<setting name="lazyLoadingEnabled" value="true"/>
+		如果A关联B,A关联C,查询A时,把B也关联出来,C要不要关联出来
+		<setting name="aggressiveLazyLoading" value="false"/>
+		<setting name="logImpl" value="LOG4J"/>
+	</settings> -->
+	<!-- 类型别名 -->
+	<typeAliases>
+		<package name="com.lixinxin.pojo"/>
+	</typeAliases>
+	
+</configuration>

@@ -1,0 +1,53 @@
+class InterfaceTextDemo01 
+{
+	public static void main(String[] args) 
+	{
+		//需求;有一个家政服务，可以扫地，可以做饭，可以洗衣服
+		HomeKeeper wang = new HomeKeeper();
+		wang.cook();
+
+
+		Robort r = new Robort();
+		r.wash();
+
+	}
+}
+
+//家政服务的接口:定义规则
+interface Service
+{
+	void clean();
+	void wash();
+	void cook();
+}
+
+//实现类;负责规则的实现或者执行
+class HomeKeeper implements Service
+{
+	@Override
+	public void clean() {
+	}
+	@Override
+	public void cook() {
+	}
+	@Override
+	public void wash() {
+	}
+}
+
+class Robort implements Service
+{
+	@Override
+	public void clean() {
+	}
+	@Override
+	public void cook() {
+	}
+	@Override
+	public void wash() {
+	}
+}
+
+
+
+

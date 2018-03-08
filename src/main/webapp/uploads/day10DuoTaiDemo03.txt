@@ -1,0 +1,56 @@
+class DuoTaiDemo03 
+{
+	public static void main(String[] args) 
+	{
+
+		/*
+		Apple a0 = new Apple();
+		a0.num  = 10;
+		a0.show();
+		a0.str = "helloi";
+		a0.display();
+
+
+		Friut f0 = new Friut();
+		f0.num  = 20;
+		f0.show();
+		*/
+
+		//如果使用了多态之后，父类的引用仍然可以去访问父类中原有的成员变量或者方法
+		Apple a = new Apple();
+		Friut f = a;
+		//无论子类中是否出现于父类中重名的成员变量，使用多态之后，都访问的是父类中的成员变量
+		System.out.println(f.num);
+		//当父类中的方法未被重写时，使用多态之后调用的是父类中的方法
+		//但是，当重写了父类中的方法时，调用的是子类中被重写之后的方法
+		f.show();
+
+		//使用了多态之后，父类的引用将不能再访问子类中特有的成员变量或者方法
+		//f.str = "fhjdhfj";
+		//f.display();	
+	}
+}
+
+class Friut
+{
+	int num;
+	public void show() {
+		System.out.println("show");
+	}
+}
+
+class Apple extends Friut
+{
+	String str;
+	//int num = 100;
+	public void display() {
+		System.out.println("display");
+	}
+
+	@Override
+	public void show() {
+		System.out.println("子类中的show");
+	}
+
+}
+

@@ -1,0 +1,26 @@
+//演示函数的调用顺序
+class FunctionUsageDemo01 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println("Hello World!");
+
+		//2.在main函数中调用自定义的函数【为了可以让自定义的函数有执行的机会】
+		//show1();
+		show2();
+	}
+
+	public static void show1() {
+		System.out.println("show~~~1!!!!被调用");
+		//1.在自定义的函数中也可以调用自定义的函数
+		show2();
+	}
+
+	public static void show2() {
+		System.out.println("show~~~2!!!!被调用");
+
+		//3.尽量不要在自定义的函数中调用main函数，会出现死循环，不建议这样做
+		String[] arr = new String[8];
+		main(arr);
+	}
+}

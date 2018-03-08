@@ -1,0 +1,59 @@
+class AbstractTextDemo02 
+{
+	public static void main(String[] args) 
+	{
+		/*要求使用抽象类实现
+		需求:
+		一个公司中有多种员工
+		普通员工类：
+			成员变量：姓名，工号
+			成员方法：工作
+		经理类：
+			成员变量：职责
+			成员方法:manage管理
+
+		设计
+		程序员
+		行政
+
+		总监
+		主管
+		*/
+		System.out.println("Hello World!");
+	}
+}
+
+//普通员工类
+abstract class Worker
+{
+	String name;
+	int id;
+
+	public abstract void work();
+}
+
+abstract class Manager extends Worker
+{
+	String Kind;
+
+	public abstract void manage();
+}
+
+class Programmer extends Worker
+{
+	@Override
+	public  void work() {
+	}
+}
+//主管
+//多重继承
+class MainManager extends Manager
+{
+	@Override
+	public  void work() {
+	}
+
+	@Override
+	public  void manage() {
+	}
+}

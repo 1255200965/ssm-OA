@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lixinxin.mapper.OverworkMapper">	
+	<!-- 可以进行字段和属性的映射 关联查询 -->
+	<resultMap type="Overwork" id="baseResultMap">
+		<!-- 标识主键 -->
+		<id column="ID" property="id" />
+		<result column="BEGINTIME" property="begintime" />
+		<result column="ENDTIME" property="endtime" />
+		<result column="Time" property="time" />
+		<result column="ISREVIEW" property="isreview" />
+		<result column="CAUSE" property="cause" />
+	</resultMap>
+	<!-- 查询映射 -->
+	<resultMap type="Overwork" id="baseresultJoin" extends="baseResultMap">
+		<!-- 关联申情人项 -->
+		<association property="apply" column="APPLYID" javaType="com.lixinxin.pojo.po.User">
+			<id column="APPLYID" property="id" />
+			<result column="USERNAME" property="username" />
+			<result column="PASSWORD" property="password" />
+			<result column="NAME" property="name" />
+			<result column="AGE" property="age" />
+			<result column="GENDER" property="gender" />
+			<result column="PHONE" property="phone" />
+			<result column="ADDRESS" property="address" />
+			<result column="ISADMIN" property="isadmin" />
+		</association>
+		<!-- 关联审批人项 -->
+		<!-- <association property="reviewer" column="REVIEWID" javaType="com.lixinxin.pojo.po.User"> 
+			<id column="REVIEWID" property="id"/> <result column="USERNAME" property="username"/> 
+			<result column="PASSWORD" property="password"/> <result column="NAME" property="name"/> 
+			<result column="AGE" property="age"/> <result column="GENDER" property="gender"/> 
+			<result column="PHONE" property="phone"/> <result column="ADDRESS" property="address"/> 
+			<result column="ISADMIN" property="isadmin"/> </association> -->
+	</resultMap>
+	<!-- 查询所有申请信息 -->
+	<select id="selectAllApplyOverwork" parameterType="int" resultMap="baseresultJoin">
+		SELECT overwork.*,user.id as applyid,user.name FROM overwork LEFT JOIN user ON
+		overwork.applyid=user.id where applyid=#{applyid}
+	</select>
+	<!-- 查询所有审批信息 -->
+	<select id="selectAllReviewOverwork" parameterType="int" resultMap="baseresultJoin">
+		SELECT overwork.*,user.id as applyid,user.name FROM overwork LEFT JOIN user ON
+		overwork.applyid=user.id where reviewid=#{reviewid}
+	</select>
+	<!-- 删除 -->
+	<delete id="deleteById" parameterType="int">
+		delete from overwork where id=#{id}
+	</delete>
+	<!-- 插入 -->
+	<insert id="insert" parameterType="Overwork" useGeneratedKeys="true"  keyProperty="id">
+		insert into overwork
+		values(#{id},#{apply.id},#{begintime},#{endtime},#{time},#{isreview},#{cause},#{reviewer.id})
+	</insert>
+	<!-- ID查询 -->
+	<select id="selectById" parameterType="int" resultMap="baseresultJoin">
+		SELECT
+		overwork.*,user.id as applyid,user.name FROM overwork LEFT JOIN user ON
+		overwork.applyid=user.id where overwork.id=#{id}
+	</select>
+	<!-- 更改 -->
+	<update id="update" parameterType="Overwork" useGeneratedKeys="true" keyProperty="id">
+		update overwork
+		<set>
+			<if test="begintime!=null and begintime!=''"> 
+			begintime=#{begintime},
+			</if>
+			<if test="endtime!=null and endtime!=''">
+			 endtime=#{endtime},
+			</if>
+			<if test="isreview!=null and isreview!=''"> 
+			isreview=#{isreview}, 
+			</if>
+			<if test="cause!=null and cause!=''">
+			 cause=#{cause} 
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

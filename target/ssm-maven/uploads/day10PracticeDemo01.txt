@@ -1,0 +1,158 @@
+class PracticeDemo01 
+{
+	public static void main(String[] args) 
+	{
+		//1.创建图书馆对象
+		Library lib = new Library("逸夫图书馆");
+
+		//2.创建书的对象并且添加到数组中
+		Books b1 = new Books("坏蛋是怎样炼成的");
+		Books b2 = new Books("葵花宝典");
+		lib.addBook(b1);
+		lib.addBook(b2);
+
+		//3.创建学生的对象并且添加到数组中
+		Student stu1 = new Student("张三",'b',"1999.10.02","QF1001");
+		Student stu2 = new Student("李四",'g',"1900.10.02","QF1002");
+		lib.addStudent(stu1);
+		lib.addStudent(stu2);
+
+		//4.测试学生借书的方法
+		stu1.borrow(lib,b1);
+
+		//5.修改学生的信息
+		stu1.showInfo();
+		stu1.changeInfo("hello",'b',"1995.4.5");
+		stu1.showInfo();
+	}
+}
+
+abstract class Person
+{
+	String name;
+	char gender;
+	String birthDate;
+
+	public Person() {}
+	public Person(String name,char gender,String birthDate) {
+		this.name = name;
+		this.gender = gender;
+		this.birthDate  = birthDate;
+	}
+
+	//抽象方法
+	//修改个人信息
+	public abstract void changeInfo(String name,char gender,String birthDate);
+	//显式个人信息
+	public abstract void showInfo();
+}
+
+interface Readers
+{
+	void borrow(Library lib,Books book);
+	void give(Library lib,Books book);
+	void search(Library lib,Books book);
+}
+
+class Student extends Person implements Readers
+{
+	String id;
+
+	public Student(){}
+	public Student(String name,char gender,String birthDate,String id) {
+		super(name,gender,birthDate);//super() 和this()
+		this.id = id;
+	}
+
+	//重写抽象类和接口中的抽象方法
+	@Override
+	public void borrow(Library lib,Books book) {
+		//需要在存储书籍的数组中进行查询，如果有，则借书成功
+		
+		//获取书籍的数组
+		Books[] arr = lib.books;
+
+		//遍历数组，顺序查找
+		for(Books b : arr) {
+			//避免空指针异常
+			if(b != null) {
+				if(b.name.equals(book.name)) {
+					System.out.println("借书成功");
+				}
+			}	
+		}
+	}
+
+	@Override
+	public void give(Library lib,Books book) {
+
+	}
+
+	@Override
+	public void search(Library lib,Books book) {
+	}
+
+	@Override
+	public void changeInfo(String name,char gender,String birthDate) {
+		this.name = name;
+		this.gender = gender;
+		this.birthDate  = birthDate;
+	}
+
+	@Override
+	public void showInfo() {
+		System.out.println(super.name + super.gender + super.birthDate + this.id);
+	}
+
+}
+
+class Books
+{
+	String name;
+	public Books(){}
+	public Books(String name) {
+		this.name = name;
+	}
+}
+
+class Library
+{
+	String name;
+	//记录图书馆的学生信息；
+	Student[] students = new Student[10];
+	//记录图书馆的藏书的书名；
+	Books[] books = new Books[10];
+
+	//定义两个int的变量，用来表示记录两个数组中的添加的学生或者书籍的下标
+	int stuNum;
+	int bookNum;
+
+	public Library(){}
+	public Library(String name) {
+		this.name = name;
+	}
+
+	//添加学生
+	public void addStudent(Student stu) {
+		//当数组满载时，将不让进行在操作
+		if(stuNum >= 10) {
+			System.out.println("库存满了，添加不进去了");
+			return;
+		}
+		//给数组中的元素 进行依次赋值
+		students[stuNum++] = stu;
+		//stuNum++;
+	}
+
+	//添加书籍
+	public void addBook(Books book) {
+		//当数组满载时，将不让进行在操作
+		if(bookNum >= 10) {
+			System.out.println("库存满了，添加不进去了");
+			return;
+		}
+		//给数组中的元素 进行依次赋值
+		books[bookNum++] = book;
+		//stuNum++;
+	}
+}

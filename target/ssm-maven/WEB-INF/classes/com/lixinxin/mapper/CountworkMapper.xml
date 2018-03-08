@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lixinxin.mapper.CountworkMapper">	
+	<!-- ID查询 -->
+	<select id="selectByAId" parameterType="int" resultType="Countwork">
+		select * from countwork where applyid=#{applyid}
+	</select>
+	<!-- 插入 -->
+	<insert id="insert" parameterType="Countwork" useGeneratedKeys="true" keyProperty="id">
+		insert into countwork values(#{id},#{applyid},#{counttime})
+	</insert>
+	<!-- 更改 -->
+	<update id="update" parameterType="Countwork" useGeneratedKeys="true" keyProperty="id">		
+		update countwork set counttime=#{counttime}	where id=#{id}
+	</update>
+</mapper>
