@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lixinxin.mapper.MailMapper">
+	<!-- ID查询 -->
+	<select id="selectById" parameterType="int" resultType="Mail">
+		select * from mail where id=#{id}
+	</select>
+	<!-- 查询总记录数 -->
+	<select id="selectCount" parameterType="Mail" resultType="long">
+		select count(*) from mail where accepterid=#{accepterid} and islitter=#{islitter}
+	</select>
+	<!-- 动态查询 -->	
+	<select id="selectByCondition" parameterType="Mail" resultType="Mail">
+		select * from mail
+		<where>
+				<if test="senderid!=null and senderid!=''">
+			    	and senderid=#{senderid} 
+				</if>
+				<if test="accepterid!=null and accepterid!=''">
+					and accepterid=#{accepterid}
+				</if>
+				<if test="subject!=null and subject!=''">
+					and subject=#{subject}
+				</if>
+				<if test="context!=null and context!=''">
+					and context=#{context}
+				</if>
+				<if test="file!=null and file!=''">
+					and file=#{file}
+				</if>
+				<if test="isread!=null and isread!=''">
+					and isread=#{isread}
+				</if>
+				<if test="time!=null and time!=''">
+					and time=#{time}
+				</if>
+				<if test="islitter!=null and islitter!=''">
+					and islitter=#{islitter}
+				</if>
+		</where>
+			order by time desc
+	</select>
+	<!-- 动态查询 -->	
+	<select id="selectByPage" parameterType="PageValue" resultType="Mail">
+		select * from mail
+		<where>
+				<if test="data.senderid!=null and data.senderid!=''">
+			    	and senderid=#{data.senderid} 
+				</if>
+				<if test="data.accepterid!=null and data.accepterid!=''">
+					and accepterid=#{data.accepterid}
+				</if>
+				<if test="data.subject!=null and data.subject!=''">
+					and subject=#{data.subject}
+				</if>
+				<if test="data.context!=null and data.context!=''">
+					and context=#{data.context}
+				</if>
+				<if test="data.file!=null and data.file!=''">
+					and file=#{data.file}
+				</if>
+				<if test="data.isread!=null and data.isread!=''">
+					and isread=#{data.isread}
+				</if>
+				<if test="data.time!=null and data.time!=''">
+					and time=#{data.time}
+				</if>
+				<if test="data.islitter!=null and data.islitter!=''">
+					and islitter=#{data.islitter}
+				</if>
+		</where>
+			limit #{pageIndex},#{currentCount}
+	</select>
+	<!-- 插入 -->
+	<insert id="insert" parameterType="Mail" useGeneratedKeys="true" keyProperty="id">
+		insert into mail values(#{id},#{senderid},#{accepterid},#{subject},#{context},#{file},#{isread},#{time},#{islitter})
+	</insert>
+	<!-- 更改 -->
+	<update id="update" parameterType="Mail" useGeneratedKeys="true" keyProperty="id">		
+			update mail
+			<set>
+				<if test="senderid!=null and senderid!=''">
+			    senderid=#{senderid},
+				</if>
+				<if test="accepterid!=null and accepterid!=''">
+					accepterid=#{accepterid},
+				</if>
+				<if test="subject!=null and subject!=''">
+					subject=#{subject},
+				</if>
+				<if test="context!=null and context!=''">
+					context=#{context},
+				</if>
+				<if test="file!=null and file!=''">
+					file=#{file},
+				</if>
+				<if test="isread!=null and isread!=''">
+					isread=#{isread},
+				</if>
+				<if test="time!=null and time!=''">
+					time=#{time},
+				</if>
+				<if test="islitter!=null and islitter!=''">
+					islitter=#{islitter}
+				</if>
+			</set>
+			where id=#{id}
+	</update>
+	<!-- 删除 -->
+	<delete id="deleteById" parameterType="int">
+		delete from mail where id=#{id}
+	</delete>
+</mapper>

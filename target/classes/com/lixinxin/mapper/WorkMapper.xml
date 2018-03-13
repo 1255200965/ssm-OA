@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lixinxin.mapper.WorkMapper">
+	<!-- sql块 -->
+	<sql id="noteColumns">
+		id as id,
+		begintime as begintime,
+		endtime as endtime,
+		time as time,
+		date as date
+	</sql>
+	<!-- 可以进行字段和属性的映射 关联查询 -->
+	<resultMap type="Work" id="baseResultMap">
+		<!-- 标识主键 -->
+		<id column="ID" property="id" />
+		<result column="BEGINTIME" property="begintime" />
+		<result column="ENDTIME" property="endtime" />
+		<result column="TIME" property="time" />
+		<result column="Date" property="date" />
+	</resultMap>
+	<!-- 查询映射 -->
+	<resultMap type="Work" id="baseresultJoin" extends="baseResultMap">
+		<!-- 关联申情人项 -->
+		<association property="apply" column="APPLYID" javaType="com.lixinxin.pojo.po.User">
+			<id column="APPLYID" property="id" />
+			<result column="USERNAME" property="username" />
+			<result column="PASSWORD" property="password" />
+			<result column="NAME" property="name" />
+			<result column="AGE" property="age" />
+			<result column="GENDER" property="gender" />
+			<result column="PHONE" property="phone" />
+			<result column="ADDRESS" property="address" />
+			<result column="ISADMIN" property="isadmin" />
+		</association>		
+	</resultMap>
+	<!-- 动态查询 -->	
+	<select id="selectByDate" parameterType="Work" resultType="Work">
+		select * from work
+		<where>
+				<if test="date!=null and date!=''">
+					date=#{date}
+				</if>
+				<if test="apply.id!=null and apply.id!=''">
+					and applyid=#{apply.id}
+				</if>
+		</where>
+			order by id asc
+	</select>
+	<!-- 查询所有 -->
+	<select id="selectAll" resultMap="baseresultJoin">
+		SELECT work.*,user.id as applyid,user.name FROM work LEFT JOIN user ON
+		work.applyid=user.id order by id asc
+	</select>
+	<!-- 动态查询 -->	
+	<select id="selectByCondition" parameterType="Work" resultMap="baseresultJoin">
+		SELECT work.*,user.id as applyid,user.name FROM work LEFT JOIN user ON
+		work.applyid=user.id
+		<where>
+				<if test="begintime!=null and begintime!=''">
+			    	 begintime=#{begintime} 
+				</if>
+				<if test="endtime!=null and endtime!=''">
+					and endtime=#{endtime}
+				</if>
+				<if test="time!=null and time!=''">
+					and time=#{time}
+				</if>
+				<if test="date!=null and date!=''">
+					and date=#{date}
+				</if>
+				<if test="apply.id!=null and apply.id!=''">
+					and applyid=#{apply.id}
+				</if>
+		</where>
+			order by id asc
+	</select>
+	<!-- 插入 -->
+	<insert id="insert" parameterType="Work" useGeneratedKeys="true" keyProperty="id">
+		insert into work
+		values(#{id},#{apply.id},#{begintime},#{endtime},#{time},#{date})
+	</insert>
+	<!-- 更改 -->
+	<update id="update" parameterType="Work" useGeneratedKeys="true" keyProperty="id">
+		update work
+		<set>
+				<if test="begintime!=null and begintime!=''">
+			    	 begintime=#{begintime}, 
+				</if>
+				<if test="endtime!=null and endtime!=''">
+					 endtime=#{endtime},
+				</if>
+				<if test="time!=null and time!=''">
+					 time=#{time},
+				</if>
+				<if test="date!=null and date!=''">
+					 date=#{date}
+				</if>		
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 查询所有申请信息 -->
+	<!-- <select id="selectAllApplyNote" parameterType="int" resultMap="baseresultJoin">
+		SELECT note.*,user.id as applyid,user.name FROM note LEFT JOIN user ON
+		note.applyid=user.id where applyid=#{applyid}
+	</select> -->
+	<!-- 查询所有申请信息分页 -->
+	<!-- <select id="selectAllApplyNoteByPage" parameterType="PageValue" resultMap="baseresultJoin">
+		SELECT note.*,user.id as applyid,user.name FROM note LEFT JOIN user ON
+		note.applyid=user.id where applyid=#{data.id} limit #{pageIndex},#{currentCount}
+	</select> -->
+	<!-- 查询所有审批信息 -->
+	<!-- <select id="selectAllReviewNote" parameterType="int" resultMap="baseresultJoin">
+		SELECT note.*,user.id as applyid,user.name FROM note LEFT JOIN user ON
+		note.applyid=user.id where reviewid=#{reviewid}
+	</select> -->
+	<!-- 查询所有审批信息分页 -->
+	<!-- <select id="selectAllReviewNoteByPage" parameterType="PageValue" resultMap="baseresultJoin">
+		SELECT note.*,user.id as applyid,user.name FROM note LEFT JOIN user ON
+		note.applyid=user.id where reviewid=#{data.id} limit #{pageIndex},#{currentCount}
+	</select> -->
+	<!-- 删除 -->
+	<!-- <delete id="deleteById" parameterType="int">
+		delete from note where id=#{id}
+	</delete> -->
+	<!-- 插入 -->
+	<!-- <insert id="insert" parameterType="Note" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into note
+		values(#{id},#{apply.id},#{begintime},#{endtime},#{day},#{isreview},#{cause},#{reviewer.id})
+	</insert> -->
+	<!-- ID查询 -->
+	<!-- <select id="selectById" parameterType="int" resultMap="baseresultJoin">
+		SELECT
+		note.*,user.id as applyid,user.name FROM note LEFT JOIN user ON
+		note.applyid=user.id where note.id=#{id}
+	</select> -->
+	<!-- 更改 -->
+	<!-- <update id="update" parameterType="Note" useGeneratedKeys="true" keyProperty="id">
+		update note
+		<set>
+			<if test="begintime!=null and begintime!=''"> 
+			begintime=#{begintime},
+			</if>
+			<if test="endtime!=null and endtime!=''">
+			 endtime=#{endtime},
+			</if>
+			<if test="isreview!=null and isreview!=''"> 
+			isreview=#{isreview}, 
+			</if>
+			<if test="cause!=null and cause!=''">
+			 cause=#{cause} 
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+ -->
+</mapper>
